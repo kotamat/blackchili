@@ -7,17 +7,19 @@ $(function(){
 		var title = $('#search-view form input:first').val();
 		$.get('http://localhost:8080/search',
 			{'title': title},
-			function(data){
-				// TODO: adapt respose data
-				$('#search-view').hide();
-				$('#play-view').show();
-			}
+			lyrics_main
 		);
 		e.preventDefault();
 	});
 
+});
+
+function lyrics_main(data){
+	$('#search-view').hide();
+	$('#play-view').show();
+
 	console.log(player);
-	var response = jQuery.parseJSON(json_raw);
+	var response = jQuery.parseJSON(data).TimeData;
 	console.log(response);
 
 	var lines
@@ -62,7 +64,7 @@ $(function(){
 	}
 
 	setInterval(function(e){ watchdog()},200)
-});
+}
 
 function watchdog(){
 	var ct = player.getCurrentTime()*1000 + 4500
