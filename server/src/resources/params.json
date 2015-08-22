@@ -2,5 +2,8 @@
   "database": {
     "host": "localhost",
     "databaseName": "blackchili"
+  },
+  "petitLyrics": {
+    "authKey": "5BOOQewJSJWIrCuHU3YkzArP07jaq0Xz"
   }
 }

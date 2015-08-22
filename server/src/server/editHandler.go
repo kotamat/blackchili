@@ -24,5 +24,7 @@ func EditHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Println(body.Abc)
 
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	// TODO
 }

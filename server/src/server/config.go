@@ -7,6 +7,7 @@ import (
 
 type Config struct {
 	Database DatabaseConfig `json:"database"`
+	PetitLyrics PetitLyricsConfig `json:"petitLyrics"`
 }
 
 type DatabaseConfig struct {
@@ -15,6 +16,10 @@ type DatabaseConfig struct {
 	User string `json:"user"`
 	Password string `json:"password"`
 	DatabaseName string `json:"databaseName"`
+}
+
+type PetitLyricsConfig struct {
+	AuthKey string `json:"authKey"`
 }
 
 var ServerConfig Config
