@@ -6,10 +6,15 @@ import (
 	"net/http"
 	"net/url"
 	"io/ioutil"
+	"github.com/dustin/gojson"
 )
 
 type SearchRequestStruct struct {
 	title string
+}
+
+type SearchResponseStruct struct {
+	TimeData LyricsData `json:"timeData`
 }
 
 type PetitLyrics struct {
@@ -26,6 +31,22 @@ type PetitSong struct {
 	XMLName xml.Name `xml:"song"`
 	LyricsData string `xml:"lyricsData"`
 }
+
+type LyricsData struct {
+	LyricLines []LyricLine `json:"lines"`
+}
+
+type LyricLine struct {
+	Time int `json:"time"`
+	Words []LyricWord `json:"words"`
+}
+
+type LyricWord struct {
+	End int `json:"end"`
+	Start int `json:"start"`
+	Word string `json:"string"`
+}
+
 
 func SearchHandler(w http.ResponseWriter, r *http.Request) {
 	body := SearchRequestStruct{r.URL.Query().Get("title")}
@@ -47,9 +68,14 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	var lyrics PetitLyrics
 	xml.Unmarshal(resBody, &lyrics)
+	var lyricsTimeData LyricsData
 	fmt.Println(lyrics.PetitSongs.PetitSongs[0].LyricsData)
+	json.Unmarshal([]byte(lyrics.PetitSongs.PetitSongs[0].LyricsData), &lyricsTimeData)
 
 	// TODO call yahoo api
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	result := SearchResponseStruct{lyricsTimeData}
+	json.NewEncoder(w).Encode(result)
+
 }
