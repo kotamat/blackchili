@@ -33,10 +33,16 @@
 #lyric{
   width: 100%;
   background-color: #DDEEFF;
+  position: relative;
+  height: 100px;
+  z-index: -1;
+}
+#lyric #wrap{
+  position: absolute;
 }
 .word{
   color: #666;
-  font-size: 20px;
+  font-size: 28px;
 }
 .word.done{
   color: #CCC;
@@ -79,8 +85,10 @@
     <div id="player"></div>
     <div id="lyric"></div>
 
-    <div id="original"></div>
-    <form id="editor" ></div>
+    <div id="change-lyrics">
+      <div id="original"></div>
+      <form id="editor"></form>
+    </div>
 
       <script>
       var player;

@@ -22,15 +22,16 @@ $(function(){
 
 	var lines
 	var lnum=0
+	$('#lyric').append($('<div id="wrap"></div>'));
 	for  (var lindex in response.lines){
 		var lelement = response.lines[lindex];
-		lines = $("<div class='line' id='line"+lnum+"'></div>")
+		lines = $("<div class='line' id='line"+lnum+"' data-linetime='"+lelement.time+"'></div>")
 		for  (var windex in lelement.words){
 			var welement = lelement.words[windex]
 			var w = $("<span class='word' id='w"+welement.start+"' data-time='"+welement.start+"'>"+welement.string+"</span> ");
 			lines.append(w)
 		}
-		$('#lyric').append(lines);
+		$('#wrap').append(lines);
 		lnum++;
 	}
 
@@ -70,6 +71,14 @@ function watchdog(){
 		var elm = $(elms[i]);
 		if(!elm.hasClass('done')  && elm.data('time')< ct){
 			elm.addClass('done')
+		}
+	}
+	lines = $('.line');
+	for(var i=0;i<lines.length;i++){
+		var line = $(lines[i]);
+		if(line.data('linetime') > ct){
+			$('#lyric #wrap').css('top', -28 * i+ 'px');
+			break;
 		}
 	}
 }
