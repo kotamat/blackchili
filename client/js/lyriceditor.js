@@ -3,8 +3,62 @@ var json_raw = '{"type":3,"lines":[{"time":17110,"words":[{"start":17110,"end":1
 
 $(function(){
 
-var response = jQuery.parseJSON(json_raw);
-console.log(response); 
+	console.log(player)
+	var response = jQuery.parseJSON(json_raw);
+	console.log(response); 
+	
+	var lines
+	var lnum=0
+	for  (var lindex in response.lines){
+		var lelement = response.lines[lindex];
+		lines = $("<div class='line' id='line"+lnum+"'></div>")
+		for  (var windex in lelement.words){
+			var welement = lelement.words[windex]
+			var w = $("<span class='word' id='w"+welement.start+"' data-time='"+welement.start+"'>"+welement.string+"</span> ");
+			lines.append(w)
+		}
+		$('#lyric').append(lines);
+		lnum++;
+	}	
+
+	lnum=0
+	for  (var lindex in response.lines){
+		var lelement = response.lines[lindex];
+		lines = $("<div class='line' id='lineO"+lnum+"'></div>")
+		for  (var windex in lelement.words){
+			var welement = lelement.words[windex]
+			var w = $("<span class='wordO' id='wO"+welement.start+"'>"+welement.string+"</span>&nbsp;&nbsp;");
+			lines.append(w)
+		}
+		$('#original').append(lines);
+		lnum++;
+	}
+
+	lnum=0;
+	for  (var lindex in response.lines){
+		var lelement = response.lines[lindex];
+		lines = $("<div class='line' id='lineE"+lnum+"'></div>")
+		for  (var windex in lelement.words){
+			var welement = lelement.words[windex]
+			var w = $("<input type='text' id='wE"+welement.start+"' value='"+welement.string+"' />");
+			lines.append(w)
+		}
+		$('#editor').append(lines);
+		lnum++;
+	}
+	
+	setInterval(function(e){ watchdog()},200)
 })
+
+function watchdog(){
+	var ct = player.getCurrentTime()*1000 + 4500
+	elms = $('.word').removeClass('done');
+	for(var i=0;i<elms.length;i++){
+		var elm = $(elms[i]);
+		if(!elm.hasClass('done')  && elm.data('time')< ct){
+			elm.addClass('done')
+		}
+	}
+}
 
 
