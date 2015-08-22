@@ -2,11 +2,24 @@ var json_raw = '{"type":3,"lines":[{"time":17110,"words":[{"start":17110,"end":1
 
 
 $(function(){
+	$('#play-view').hide();
+	$('#search-view form').submit(function(e){
+		var title = $('#search-view form input:first').val();
+		$.get('http://localhost:8080/search',
+			{'title': title},
+			function(data){
+				// TODO: adapt respose data
+				$('#search-view').hide();
+				$('#play-view').show();
+			}
+		);
+		e.preventDefault();
+	});
 
-	console.log(player)
+	console.log(player);
 	var response = jQuery.parseJSON(json_raw);
-	console.log(response); 
-	
+	console.log(response);
+
 	var lines
 	var lnum=0
 	for  (var lindex in response.lines){
@@ -19,7 +32,7 @@ $(function(){
 		}
 		$('#lyric').append(lines);
 		lnum++;
-	}	
+	}
 
 	lnum=0
 	for  (var lindex in response.lines){
@@ -46,9 +59,9 @@ $(function(){
 		$('#editor').append(lines);
 		lnum++;
 	}
-	
+
 	setInterval(function(e){ watchdog()},200)
-})
+});
 
 function watchdog(){
 	var ct = player.getCurrentTime()*1000 + 4500
@@ -60,5 +73,3 @@ function watchdog(){
 		}
 	}
 }
-
-
