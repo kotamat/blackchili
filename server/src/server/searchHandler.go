@@ -16,7 +16,7 @@ type SearchRequestStruct struct {
 
 type SearchResponseStruct struct {
 	LyricsId string `json:"lyricsId"`
-	OriginalLyricLines []LyricLine `json:"originalLines`
+	OriginalLyricLines []LyricLine `json:"originalLines"`
 	CurrentLyricLines []LyricLine `json:"currentLines"`
 }
 
