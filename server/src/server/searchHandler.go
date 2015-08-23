@@ -7,6 +7,7 @@ import (
 	"net/url"
 	"io/ioutil"
 	"github.com/dustin/gojson"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type SearchRequestStruct struct {
@@ -14,7 +15,8 @@ type SearchRequestStruct struct {
 }
 
 type SearchResponseStruct struct {
-	TimeData LyricsData `json:"timeData`
+	LyricsId string `json:"lyricsId"`
+	LyricLines []LyricLine `json:"lines"`
 }
 
 type PetitLyrics struct {
@@ -29,6 +31,7 @@ type PetitSongs struct {
 
 type PetitSong struct {
 	XMLName xml.Name `xml:"song"`
+	LyricsId string `xml:"lyricsId"`
 	LyricsData string `xml:"lyricsData"`
 }
 
@@ -47,7 +50,6 @@ type LyricWord struct {
 	Word string `json:"string"`
 }
 
-
 func SearchHandler(w http.ResponseWriter, r *http.Request) {
 	body := SearchRequestStruct{r.URL.Query().Get("title")}
 
@@ -62,20 +64,28 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer res.Body.Close()
-	resBody, readerr := ioutil.ReadAll(res.Body);
-	if readerr != nil {
+	resBody, readErr := ioutil.ReadAll(res.Body);
+	if readErr != nil {
 		return
 	}
-	var lyrics PetitLyrics
-	xml.Unmarshal(resBody, &lyrics)
-	var lyricsTimeData LyricsData
-	fmt.Println(lyrics.PetitSongs.PetitSongs[0].LyricsData)
-	json.Unmarshal([]byte(lyrics.PetitSongs.PetitSongs[0].LyricsData), &lyricsTimeData)
+	var petitLyrics PetitLyrics
+	xml.Unmarshal(resBody, &petitLyrics)
+	lyricsId := petitLyrics.PetitSongs.PetitSongs[0].LyricsId
+	var lyricsTmp []SearchResponseStruct
+	LyricsInDb.Find(bson.M{"lyricsid": lyricsId}).All(&lyricsTmp)
 
-	// TODO call yahoo api
+	var lyricsTimeData SearchResponseStruct
+	if len(lyricsTmp) == 0 {
+		var lyricsData LyricsData
+		json.Unmarshal([]byte(petitLyrics.PetitSongs.PetitSongs[0].LyricsData), &lyricsData)
+		lyricsTimeData = SearchResponseStruct{lyricsId, lyricsData.LyricLines}
+		LyricsInDb.Insert(lyricsTimeData)
+	} else {
+		fmt.Println("data found in db")
+		lyricsTimeData = lyricsTmp[0]
+	}
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	result := SearchResponseStruct{lyricsTimeData}
-	json.NewEncoder(w).Encode(result)
+	json.NewEncoder(w).Encode(lyricsTimeData)
 
 }
