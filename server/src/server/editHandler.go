@@ -17,6 +17,13 @@ type EditHandlerResponseStruct struct {
 }
 
 func EditHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	w.Header().Set("Access-Control-Allow-Headers",
+		"Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	if r.Method == "OPTIONS" {
+		return
+	}
 	decoder := json.NewDecoder(r.Body)
 	var body EditHandlerRequestStruct
 	err := decoder.Decode(&body)
@@ -24,8 +31,6 @@ func EditHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	LyricsInDb.Update(bson.M{"lyricsid": body.LyricsId}, bson.M{"$set": bson.M{"currentlyriclines": body.CurrentLyricLines}})
-
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	json.NewEncoder(w).Encode(EditHandlerResponseStruct{body.LyricsId})
 }
