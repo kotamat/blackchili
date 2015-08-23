@@ -37,6 +37,9 @@ $(function(){
 			dataType: 'json',
 			data: JSON.stringify({'lyricsId': response.lyricsId, 'currentLines': words})
 		});
+		$('#lyric').html('');
+		$('#editor').html('<input type="submit" />');
+		$('#original').html('');
 		lyrics_main();
 	});
 
