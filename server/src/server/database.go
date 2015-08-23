@@ -6,6 +6,8 @@ import (
 
 var DatabaseSession *mgo.Session
 var Database *mgo.Database
+var LyricsInDb *mgo.Collection
+const LYRICS_COLLECTION string = "lyrics"
 
 func ConnectDatabase() {
 	session, err := mgo.Dial(ServerConfig.Database.Host)
