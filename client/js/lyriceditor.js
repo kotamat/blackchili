@@ -35,7 +35,7 @@ $(function(){
 			url: 'http://localhost:8080/edit',
 			contentType: 'application/json',
 			dataType: 'json',
-			data: {'lyricsId': response.lyricsId, 'currentLines': JSON.stringify(words)}
+			data: JSON.stringify({'lyricsId': response.lyricsId, 'currentLines': words})
 		});
 		lyrics_main();
 	});
