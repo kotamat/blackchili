@@ -12,6 +12,7 @@ import (
 
 type SearchRequestStruct struct {
 	title string
+	artist string
 }
 
 type SearchResponseStruct struct {
@@ -52,10 +53,14 @@ type LyricWord struct {
 }
 
 func SearchHandler(w http.ResponseWriter, r *http.Request) {
-	body := SearchRequestStruct{r.URL.Query().Get("title")}
+	body := SearchRequestStruct{r.URL.Query().Get("title"), r.URL.Query().Get("artist")}
 
 	petitValues := url.Values{}
 	petitValues.Add("title", body.title)
+	if body.artist != "" {
+		fmt.Println("artist specified")
+		petitValues.Add("artist", body.artist)
+	}
 	petitValues.Add("priority", "3")
 	petitValues.Add("auth_key", ServerConfig.PetitLyrics.AuthKey)
 

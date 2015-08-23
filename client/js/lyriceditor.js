@@ -6,9 +6,10 @@ $(function(){
 
 	$('#play-view').hide();
 	$('#search-view form').submit(function(e){
-		var title = $('#search-view form input:first').val();
+		var title = $('#search-view form input[name=title]').val();
+		var artist = $('#search-view form input[name=artist]').val();
 		$.get('http://localhost:8080/search',
-			{'title': title},
+			{'title': title,'artist': artist},
 			function(data){
 				response = jQuery.parseJSON(data);
 				lyrics_main();
