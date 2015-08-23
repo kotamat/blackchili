@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Meta, title, CSS, favicons, etc. -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Bootstrap, a sleek, intuitive, and powerful mobile first front-end framework for faster and easier web development.">
+<meta name="keywords" content="HTML, CSS, JS, JavaScript, framework, bootstrap, front-end, frontend, web development">
+<meta name="author" content="Shinichi HISAMATSU">
+
+<title>替え歌エディタ</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+
+<style>
+#lyric{
+  width: 100%;
+  background-color: #DDEEFF;
+  position: relative;
+  height: 100%;
+  font-size: 100px;
+}
+#lyric #wrap{
+  position: absolute;
+}
+</style>
+
+<!-- Favicons -->
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" href="/favicon.ico">
+  </head>
+  <body>
+    <div id="lyric"></div>
+  </body>
+  <script>
+  var startdt = Date.now();
+  $(function(){
+    var title = '大きな古時計';
+    $.get('http://localhost:8080/search',
+    {'title': title},
+    function(data){
+      response = jQuery.parseJSON(data);
+      lyrics_main();
+    }
+  );
+  function lyrics_main(){
+    var lines
+    var lnum=0
+    $('#lyric').append($('<div id="wrap"></div>'));
+    for  (var lindex in response.currentLines){
+      var lelement = response.currentLines[lindex];
+      lines = $("<div class='line' id='line"+lnum+"' data-linetime='"+lelement.time+"'></div>")
+      for  (var windex in lelement.words){
+        var welement = lelement.words[windex]
+        var w = $("<span class='word' id='w"+welement.start+"' data-time='"+welement.start+"'>"+welement.string+"</span> ");
+        lines.append(w)
+      }
+      $('#wrap').append(lines);
+      lnum++;
+    }
+    setInterval(function(e){ watchdog()},200)
+  }
+
+  function watchdog(){
+    var nowdt = Date.now();
+    var ct = nowdt - startdt;
+    lines = $('.line');
+    for(var i=0;i<lines.length;i++){
+      var line = $(lines[i]);
+      if(line.data('linetime') > ct){
+        var step = (i == 0)?0 : i-1;
+        $('#lyric #wrap').css('top', -143 * step+ 'px');
+        break;
+      }
+    }
+  }
+});
+</script>
+</html>
