@@ -75,7 +75,8 @@
   <div id="search-view">
     <form>
       <div class="form-group">
-        タイトル<input type="text">
+        タイトル<input name="title" type="text">
+		歌手名<input name="artist" type="text">
         <input type="submit" value="送信">
       </div>
     </form>
@@ -102,7 +103,7 @@
         player = new YT.Player('player', {
           height: '360',
           width: '1000',
-          videoId: 'UqO1YBng9wY',
+          videoId: 'jTM40li-D-o',
           events: {
             'onReady': onPlayerReady,
             'onStateChange': onPlayerStateChange
