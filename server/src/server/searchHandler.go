@@ -16,7 +16,8 @@ type SearchRequestStruct struct {
 
 type SearchResponseStruct struct {
 	LyricsId string `json:"lyricsId"`
-	LyricLines []LyricLine `json:"lines"`
+	OriginalLyricLines []LyricLine `json:"originalLines`
+	CurrentLyricLines []LyricLine `json:"currentLines"`
 }
 
 type PetitLyrics struct {
@@ -78,7 +79,7 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 	if len(lyricsTmp) == 0 {
 		var lyricsData LyricsData
 		json.Unmarshal([]byte(petitLyrics.PetitSongs.PetitSongs[0].LyricsData), &lyricsData)
-		lyricsTimeData = SearchResponseStruct{lyricsId, lyricsData.LyricLines}
+		lyricsTimeData = SearchResponseStruct{lyricsId, lyricsData.LyricLines, lyricsData.LyricLines}
 		LyricsInDb.Insert(lyricsTimeData)
 	} else {
 		fmt.Println("data found in db")
