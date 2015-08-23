@@ -1,18 +1,19 @@
 package server
 
 import (
-	"fmt"
 	//"encoding/json"
 	"net/http"
 	"github.com/dustin/gojson"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type EditHandlerRequestStruct struct {
-	Abc string
+	LyricsId string `json:"lyricsId"`
+	CurrentLyricLines []LyricLine `json:"currentLines"`
 }
 
 type EditHandlerResponseStruct struct {
-
+	LyricsId string `json:"lyricsId"`
 }
 
 func EditHandler(w http.ResponseWriter, r *http.Request) {
@@ -22,9 +23,9 @@ func EditHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(body.Abc)
+	LyricsInDb.Update(bson.M{"lyricsid": body.LyricsId}, bson.M{"$set": bson.M{"currentlyriclines": body.CurrentLyricLines}})
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
-	// TODO
+	json.NewEncoder(w).Encode(EditHandlerResponseStruct{body.LyricsId})
 }
