@@ -79,7 +79,8 @@ function watchdog(){
 	for(var i=0;i<lines.length;i++){
 		var line = $(lines[i]);
 		if(line.data('linetime') > ct){
-			$('#lyric #wrap').css('top', -28 * i+ 'px');
+			var step = (i == 0)?0 : i-1;
+			$('#lyric #wrap').css('top', -40 * step+ 'px');
 			break;
 		}
 	}
