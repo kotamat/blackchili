@@ -12,6 +12,18 @@ $(function(){
 			{'title': title,'artist': artist},
 			function(data){
 				response = jQuery.parseJSON(data);
+				var videoId;
+				if (response.lyricsId == 11247) {
+					videoId = "jTM40li-D-o";
+				} else if(response.lyricsId == 182197) {
+					videoId = "UqO1YBng9wY";
+				} else {
+					videoId = "Kygoj4Se2hE";
+				}
+				player.loadVideoById({
+						videoId: videoId
+					}
+				);
 				lyrics_main();
 			}
 		);
