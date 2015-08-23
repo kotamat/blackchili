@@ -18,7 +18,7 @@ $(function(){
 		e.preventDefault();
 	});
 
-	$('#editor').append($('<input type="submit" />'));
+	$('#editor').append($('<input type="submit" value="訳を反映する" />'));
 	$('#editor').submit(function(e){
 		e.preventDefault();
 		var title = $('#editor form input:submit').val();
@@ -102,7 +102,7 @@ function watchdog(){
 	elms = $('.word').removeClass('done');
 	for(var i=0;i<elms.length;i++){
 		var elm = $(elms[i]);
-		if(!elm.hasClass('done')  && elm.data('time')< ct){
+		if(!elm.hasClass('done')  && elm.data('time')< ct && elm.data('time') !=0){
 			elm.addClass('done')
 		}
 	}

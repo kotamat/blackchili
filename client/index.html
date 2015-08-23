@@ -30,16 +30,41 @@
 <script src="./js/lyriceditor.js"></script>
 
 <style>
+#header{
+  height: 100px;
+  width: 100%;
+  background-color: #410c30;
+}
+div#search-view {
+    margin-bottom: 102px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 102px;
+    width: 500px;
+}
+#player{
+  width:1024px;
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+#player-back{
+  height:360px;
+  position: relative;
+}
 #lyric{
   width: 100%;
-  background-color: #DDEEFF;
   position: relative;
   height: 100px;
   z-index: -1;
   overflow: hidden;
+  border: solid 2px black;
 }
 #lyric #wrap{
   position: absolute;
+  margin-left: 450px;
 }
 .word{
   color: #666;
@@ -55,13 +80,39 @@
   float: left;
 }
 #original{
-  background-color: #DDFFEE;
+  background-color: #410c30;
+  color:white;
+  text-align: right;
+  padding-right: 30px;
   line-height: 2em;
 }
 #editor{
-  background-color: #EEFFDD;
+  background-color: #fff;
+  padding-left: 30px;
+  text-align: left;
 }
 
+#editor > input[type="submit"] {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: #410c30;
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    color: white;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    position: absolute;
+    right: 10px;
+}
 
 </style>
 
@@ -70,7 +121,7 @@
 <link rel="icon" href="/favicon.ico">
   </head>
   <body>
-  <h1 id="songname">スピードと摩擦</h1>
+    <div id="header"></div>
 
   <div id="search-view">
     <form>
@@ -85,6 +136,7 @@
   <div id="play-view">
 
     <div id="player"></div>
+    <div id="player-back"></div>
     <div id="lyric"></div>
 
     <div id="change-lyrics">
